@@ -15,7 +15,7 @@ interface Props {
 }
 export default async function GenderPage({ params, searchParams }: Props) {
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const gender = params.gender ? params.gender : 'men';
+  const { gender } = params;
 
   // if (gender.includes("kids")) {
   //   notFound();
@@ -26,16 +26,16 @@ export default async function GenderPage({ params, searchParams }: Props) {
     gender: gender as Gender
   });
 
+  if (products.length === 0) {
+    redirect(`/gender/${gender}`);
+  }
+
   const labels: Record<string, string> = {
     men: "Hombres",
     women: "Mujeres",
     kid: "Niños",
     unisex: "Todos",
   };
-
-  if (products.length === 0) {
-    redirect('/');
-  }
 
   return (
     <>
