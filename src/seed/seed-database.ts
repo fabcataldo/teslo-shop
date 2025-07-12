@@ -1,4 +1,3 @@
-import { Size } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { initialData } from './seed';
 

@@ -1,4 +1,4 @@
-import { QuantitySelector, Title } from "@/components";
+import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export default function CheckoutPage() {
                     height={100}
                     alt={product.title}
                     className="mr-5 rounded"
-                    />
+                  />
 
                   <div>
                     <p>{product.title}</p>
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
               <p>123.123.123</p>
             </div>
 
-            <div className="w-full h-0.5 rounded bg-gray-200 mb-10"/>
+            <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
 
             <h2 className="text-2xl mb-2">Resumen de orden</h2>
             <div className="grid grid-cols-2">
@@ -84,11 +84,11 @@ export default function CheckoutPage() {
             <div className="mt-5 mb-2 w-full">
               <p className="mb-5">
                 <span className="text-xs">
-                  Al hacer click en &quot;"Colocar orden"&quot;, acpetas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad</a>
+                  Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">política de privacidad</a>
                 </span>
               </p>
 
-              <Link 
+              <Link
                 className="flex btn-primary justify-center"
                 href={"/orders/123"}>
                 Colocar orden

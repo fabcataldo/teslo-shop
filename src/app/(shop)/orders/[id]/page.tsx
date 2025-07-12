@@ -2,7 +2,6 @@ import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import { IoCardOutline } from "react-icons/io5";
 
 const productsInCart = [

@@ -5,17 +5,15 @@ import { Pagination, ProductGrid, Title } from "@/components";
 import { Gender } from "@prisma/client";
 import { redirect } from "next/navigation";
 
-interface Props {
-  params: {
-    gender: string;
-  },
-  searchParams: {
-    page?: string;
-  }
-}
+interface Props {  
+  params: Promise<{ gender: string }>  
+  searchParams: Promise<{ page?: string }>
+} 
 export default async function GenderPage({ params, searchParams }: Props) {
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const { gender } = params;
+  const realSearchParams = await searchParams;
+  const realParams = await params;
+  const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
+  const { gender } = realParams;
 
   // if (gender.includes("kids")) {
   //   notFound();
