@@ -50,7 +50,8 @@ export const getPaginatedProductsWithImages = async ({
                 images: product.ProductImage.map(image => image.url)
             }))
         }
-    } catch (_) {
+    } catch (error) {
+        console.log(error);
         throw new Error('No se pudo cargar los productos');
     }
 }
