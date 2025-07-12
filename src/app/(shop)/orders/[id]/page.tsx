@@ -11,13 +11,12 @@ const productsInCart = [
 ];
 
 interface Props {
-  params: {
-    id: string;
-  }
+  params: Promise<{ id: string }>;
 }
 
-export default function OrdersByIdPage({ params }: Props) {
-  const { id } = params;
+export default async function OrdersByIdPage({ params }: Props) {
+  const realParams = await params;
+  const { id } = realParams;
 
   //validar
   //redirect('//)
