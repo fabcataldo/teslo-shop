@@ -7,12 +7,17 @@ async function main() {
     // si estoy trabajando solo creando la bd para dev, comento el
     // await Promise.all([.... y pongo await a cada una de las 3 instrucciones
     await Promise.all([
+        prisma.user.deleteMany(),
         prisma.productImage.deleteMany(),
         prisma.product.deleteMany(),
         prisma.category.deleteMany()
     ]);
 
-    const {categories, products} = initialData;
+    const {categories, products, users } = initialData;
+
+    await prisma.user.createMany({
+        data: users
+    });
 
     //categorias
     const categoriesData = categories.map(category => ({
