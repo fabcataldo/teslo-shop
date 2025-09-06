@@ -3,11 +3,25 @@
 import { authenticate } from "@/actions";
 import clsx from "clsx";
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+// import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { IoInformationOutline } from "react-icons/io5";
 
 export const LoginForm = () => {
-    const [state, dispatch] = useFormState(authenticate, undefined);
+    const [state, dispatch] = useActionState(authenticate, undefined);
+    // const router = useRouter();
+
+    console.log('state')
+    console.log({state})
+    
+    useEffect(() => {
+      if(state === 'Success'){
+        // router.replace('/');
+        window.location.replace('/');
+      }
+    }, [state]);
+    
 
     return (
         <form action={dispatch} className="flex flex-col">

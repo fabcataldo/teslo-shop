@@ -12,9 +12,16 @@ export async function authenticate(
     // await sleep(2);
 
     //formdata es la data del form "encriptado"
-    await signIn('credentials', formData);
+    await signIn('credentials', {
+      ...Object.fromEntries(formData),
+      redirect: false,
+    });
+
+    return 'Success';
   } catch (error) {
-    // return 'Invalid credentials.';
-    return 'CredentialsSignin';
+    // if((error as any).type === 'CredentialsSignin'){
+      return 'CredentialsSignin';
+    // }
+    // return 'UnknownError';
   }
 }
