@@ -25,13 +25,14 @@ export const Sidebar = () => {
   const isAuthenticated = !!session?.user;
 
   const router = useRouter(); 
+  const role = session?.user.role;
 
   const doLogout = async () => { 
-      await logout()
-      // redirect('/');
+      await logout();
+
+      closeMenu();
       console.log('hizo el logout')
       router.replace('/auth/login');
-      console.log('remplazo la turt')
   }
 
   return (
@@ -65,48 +66,71 @@ export const Sidebar = () => {
           onClick={closeMenu}
         />
 
-        {/* input */}
-        <div className="relative mt-14">
-          <IoSearchOutline size={20} className="absolute top-2 left-2" />
-          <input
-            type="text"
-            placeholder="Buscar"
-            className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
-          />
-        </div>
-
-        {/* menu */}
-        <Link
-          href="/profile"
-          onClick={() => closeMenu()}
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoPersonOutline size={30} />
-          <span className="ml-3 text-xl">Perfil</span>
-        </Link>
-
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-
         {
           isAuthenticated && (
-            <button
-              className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all w-full"
-              onClick={() => {
-                doLogout();
-                closeMenu();
-              }}
-            >
-              <IoLogOutOutline size={ 30 } />
-              <span className="ml-3 text-xl">Salir</span>
-            </button>
+            <>
+              <div className="relative mt-14">
+                <IoSearchOutline size={20} className="absolute top-2 left-2" />
+                <input
+                  type="text"
+                  placeholder="Buscar"
+                  className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              {/* menu */}
+              <Link
+                href="/profile"
+                onClick={() => closeMenu()}
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              >
+                <IoPersonOutline size={30} />
+                <span className="ml-3 text-xl">Perfil</span>
+              </Link>
+
+              <Link
+                href="/"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              >
+                <IoTicketOutline size={30} />
+                <span className="ml-3 text-xl">Ordenes</span>
+              </Link>
+
+              <button
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all w-full"
+                onClick={doLogout}
+              >
+                <IoLogOutOutline size={ 30 } />
+                <span className="ml-3 text-xl">Salir</span>
+              </button>
+            </>
           )
         }
+
+        {
+          isAuthenticated && role?.includes('admin') && (
+            <>
+              {/* line separator */}
+              <div className="w-full h-px bg-gray-200 my-10" />
+
+              <Link
+                href="/"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              >
+                <IoShirtOutline size={30} />
+                <span className="ml-3 text-xl">Products</span>
+              </Link>
+
+              <Link
+                href="/"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              >
+                <IoPeopleOutline size={30} />
+                <span className="ml-3 text-xl">Usuarios</span>
+              </Link>
+            </>
+          )
+        }        
 
         {
           !isAuthenticated && (
@@ -121,32 +145,6 @@ export const Sidebar = () => {
           )
         }
 
-        {/* line separator */}
-        <div className="w-full h-px bg-gray-200 my-10" />
-
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoShirtOutline size={30} />
-          <span className="ml-3 text-xl">Products</span>
-        </Link>
-
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-
-        <Link
-          href="/"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoPeopleOutline size={30} />
-          <span className="ml-3 text-xl">Usuarios</span>
-        </Link>
       </nav>
     </div>
   );
