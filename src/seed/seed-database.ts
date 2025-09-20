@@ -8,6 +8,7 @@ async function main() {
     // si estoy trabajando solo creando la bd para dev, comento el
     // await Promise.all([.... y pongo await a cada una de las 3 instrucciones
     await Promise.all([
+        prisma.userAddress.deleteMany(),
         prisma.user.deleteMany(),
         prisma.productImage.deleteMany(),
         prisma.product.deleteMany(),
