@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 
 export const deleteUserAddress = async(userId: string) => {
-    console.log('DELETEO')
     try {
         const deleted = await prisma.userAddress.delete({
             where: {

@@ -31,7 +31,6 @@ export const Sidebar = () => {
       await logout();
 
       closeMenu();
-      console.log('hizo el logout')
       router.replace('/auth/login');
   }
 

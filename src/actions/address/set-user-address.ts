@@ -21,8 +21,6 @@ export const setUserAddress = async (address: Address, userId: string) => {
 
 const createOrReplaceAddress = async (address: Address, userId: string) => {
     try {
-        console.log({ userId });
-
         const storedAddress = await prisma.userAddress.findUnique({
             where: { userId }
         });
@@ -39,8 +37,6 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
             postalCode: address.postalCode
         }
 
-        console.log('storedAddress')
-        console.log(storedAddress)
         if (!storedAddress){
             const newAddress = await prisma.userAddress.create({
                 data: addressToSave
