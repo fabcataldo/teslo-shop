@@ -13,7 +13,10 @@ async function main() {
         prisma.productImage.deleteMany(),
         prisma.product.deleteMany(),
         prisma.category.deleteMany(),
-        prisma.country.deleteMany()
+        prisma.country.deleteMany(),
+        prisma.orderAddress.deleteMany(),
+        prisma.orderItem.deleteMany(),
+        prisma.order.deleteMany(),
     ]);
 
     const {categories, products, users } = initialData;
