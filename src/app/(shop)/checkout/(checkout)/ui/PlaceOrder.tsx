@@ -5,17 +5,22 @@ import { useCartStore } from "@/store";
 import { useAddressStore } from "@/store/address/address-store";
 import { currencyFormatter } from "@/utils";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
 
 export const PlaceOrder = () => {
+    const router = useRouter();
     const [loaded, setLoaded] = useState(false);
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const address = useAddressStore(state => state.address);
     const cart = useCartStore(state => state.cart);
+    const clearCart = useCartStore(state => state.clearCart);
 
     const summaryInformation = useCartStore(useShallow((state) => state.getSummaryInformation()));
     const { subTotal, tax, total, itemsInCart } = summaryInformation;
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(()=>{
         setLoaded(true);
@@ -24,7 +29,6 @@ export const PlaceOrder = () => {
     const onPlaceOrder = async() => {
         setIsPlacingOrder(true);
 
-        // await sleep(2);
         const productsToOrder = cart.map(product => ({
             productId: product.id,
             quantity: product.quantity,
@@ -32,9 +36,16 @@ export const PlaceOrder = () => {
         }));
 
         const resp = await placeOrder(productsToOrder, address);
-        console.log({resp});
 
-        setIsPlacingOrder(false);
+        if(!resp.ok){
+            setIsPlacingOrder(false);
+            setErrorMessage(resp.message);
+            return;
+        }
+        
+        clearCart();
+
+        router.replace('/orders/' + resp.order!.id);
     }
 
     if(!loaded) {
@@ -79,7 +90,7 @@ export const PlaceOrder = () => {
                     </span>
                 </p>
 
-                {/* <p className="text-red-500">Error de creación</p> */}
+                <p className="text-red-500">{errorMessage}</p>
                 
                 <button
                     onClick={onPlaceOrder}
