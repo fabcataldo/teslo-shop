@@ -1,5 +1,5 @@
 import { getOrderById } from "@/actions";
-import { Title } from "@/components";
+import { PayPalButton, Title } from "@/components";
 import clsx from "clsx";
 import Image from "next/image";
 import { IoCardOutline } from "react-icons/io5";
@@ -117,28 +117,10 @@ export default async function OrdersByIdPage({ params }: Props) {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-               {/* 
-              //TODO llevarlo a un componente del lado del cliente
-              */}
-              <div className={
-                clsx(
-                  "flex items-center rounded-lg py2 px-3.5 text-xs font-bold text-white mb-5",
-                  {
-                    'bg-red-500': false,
-                    'bg-green-700': true,
-                  }
-                )
-              }>
-                <IoCardOutline size={30}></IoCardOutline>
-                {
-                  order!.isPaid ? (
-                    <span className="mx-2">Pagada</span>
-                  ) : (
-                    <span className="mx-2">Pendiente de pago</span>
-                  )
-                }
-              </div>
-
+              <PayPalButton
+                amount={order!.total}
+                orderId={order!.id}
+              />
             </div>
           </div>
         </div>
