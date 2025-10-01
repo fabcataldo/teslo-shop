@@ -16,3 +16,4 @@ export * from './ui/pagination/Pagination';
 export * from './product/stock-label/StockLabel';
 export * from './providers/Providers';
 export * from './paypal/PayPalButton';
+export * from './orders/OrderStatus';
