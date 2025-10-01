@@ -19,6 +19,7 @@ type FormInputs = {
     country: string;
     phone: string;
     rememberAddress: boolean;
+    userId?: string;
 }
 
 interface Props {
@@ -49,7 +50,7 @@ export const AddressForm = ({countries, userStoredAddress = {}}: Props) => {
     
 
     const onSubmit = async (data: FormInputs) => {
-        const { rememberAddress, ...restAddress } = data;
+        const { rememberAddress, userId, ...restAddress } = data;
         setAddress(restAddress);
 
         if(rememberAddress){
