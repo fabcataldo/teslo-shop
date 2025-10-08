@@ -16,8 +16,9 @@ export default async function OrdersPage() {
     redirect('/auth/login');
   }
 
+  //TODO agregar paginación
   return (
-    //TODO agregar paginación
+    
     <>
       <Title title="Orders" />
 

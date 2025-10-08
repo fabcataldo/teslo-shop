@@ -2,15 +2,10 @@ export const revalidate = 60;
 
 import { getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
+import { CustomSearchParams } from "@/interfaces/custom-search-params.interface";
 import { redirect } from "next/navigation";
 
-interface Props {
-  searchParams: {
-    page?: string;
-  }
-}
-
-export default async function HomePage({ searchParams }: Props) {
+export default async function HomePage({ searchParams }: CustomSearchParams) {
   const realSearchParams = await searchParams;
   const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
   const { products, totalPages } = await getPaginatedProductsWithImages({ page });
