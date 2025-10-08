@@ -17,3 +17,5 @@ export * from './payments/paypal-check-payment';
 export * from './order/get-paginated-orders';
 export * from './users/get-paginated-users';
 export * from './users/change-user-role';
+export * from './categories/get-categories';
+export * from './product/create-update-product';
