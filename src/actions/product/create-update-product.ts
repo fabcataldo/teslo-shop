@@ -4,9 +4,11 @@ import { prisma } from '@/lib/prisma';
 import { Gender, Product, Size } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config(process.env.CLOUDINARY_URL ?? '');
 
 const productSchema = z.object({
-    id: z.string().uuid().optional().nullable(),
+    id: z.string().min(1).optional().nullable(),
     title: z.string().min(3).max(255),
     slug: z.string().min(3).max(255),
     description: z.string(),
@@ -14,11 +16,11 @@ const productSchema = z.object({
         .number()
         .min(0)
         .transform(val => Number(val.toFixed(2))),
-    stock: z.coerce
+    inStock: z.coerce
         .number()
         .min(0)
         .transform(val => Number(val.toFixed(0))),
-    categoryId: z.string().uuid(),
+    categoryId: z.string().min(1),
     sizes: z.coerce.string().transform(val => val.split(',')),
     tags: z.string(),
     gender: z.nativeEnum(Gender)
@@ -45,8 +47,6 @@ export const createUpdateProduct = async (formData: FormData) => {
             const tagsArray = rest.tags.split(',').map(tag => tag.trim().toLowerCase());
 
             if (id) {
-                //actualizar
-
                 product = await prisma.product.update({
                     where: { id },
                     data: {
@@ -60,11 +60,10 @@ export const createUpdateProduct = async (formData: FormData) => {
                     }
                 })
             } else {
-                //crear
                 product = await prisma.product.create({
                     data: {
                         ...rest,
-                        inStock: rest.stock, // Add inStock field as required by ProductUncheckedCreateInput
+                        inStock: rest.inStock, // Add inStock field as required by ProductUncheckedCreateInput
                         sizes: {
                             set: rest.sizes as Size[]
                         },
@@ -75,12 +74,25 @@ export const createUpdateProduct = async (formData: FormData) => {
                 })
             }
 
+            if(formData.getAll('images')){
+                const images = await uploadImages(formData.getAll('images') as File[]);
+                if(!images) {
+                    throw new Error('no se pudo cargar las imágenes');
+                }
+
+                await prisma.productImage.createMany({
+                    data: images.map(image => ({
+                        url: image!,
+                        productId: product.id
+                    }))
+                });
+            }
+
             return {
                 product
             }
         });
 
-        //todo: revalidar paths
         revalidatePath('/admin/products');
         revalidatePath(`/admin/product/${product.slug}`);
         revalidatePath(`/products/${product.slug}`);
@@ -95,5 +107,29 @@ export const createUpdateProduct = async (formData: FormData) => {
             ok: false,
             message: 'No se pudo actualizar/crear el producto'
         }
+    }
+}
+
+
+const uploadImages = async(images: File[]) => {
+    try {
+        const uploadPromises = images.map(async(image) => {
+            try {
+                const buffer = await image.arrayBuffer();
+                const base64Image = Buffer.from(buffer).toString('base64');
+    
+                return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`)
+                    .then(r => r.secure_url);
+            } catch (error) {
+                console.log(error);
+                return null;
+            }
+        });
+
+        const uploadedImages = await Promise.all(uploadPromises);
+        return uploadedImages;
+    } catch (error) {
+        console.log(error);
+        return null;
     }
 }

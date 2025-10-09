@@ -19,3 +19,5 @@ export * from './users/get-paginated-users';
 export * from './users/change-user-role';
 export * from './categories/get-categories';
 export * from './product/create-update-product';
+export * from './product/delete-product-image';
+

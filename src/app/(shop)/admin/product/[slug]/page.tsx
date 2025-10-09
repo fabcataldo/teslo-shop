@@ -4,22 +4,19 @@ import { redirect } from "next/navigation";
 import { ProductForm } from "./ui/ProductForm";
 
 interface Props {
-    params: {
-        slug: string
-    }
+    params: Promise<{ slug: string }>;
 }
 
 
 export default async function ProductPage({ params }: Props){
-    const {slug} = params;
+    const realParams = await params;
+    const { slug } = realParams;
 
     const [product, categories] = await Promise.all([
         getProductBySlug(slug),
         getCategories()
-        
-    ])
+    ]);
 
-    //TODO: new product
     if(!product && slug !== 'new') {
         redirect('/admin/products');
     }

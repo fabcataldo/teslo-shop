@@ -1,16 +1,16 @@
 "use client";
 
-import { createUpdateProduct } from "@/actions";
-import { Product, ProductImage } from "@/interfaces";
+import { createUpdateProduct, deleteProductImage } from "@/actions";
+import { ProductImage } from "@/components";
+import { Product, ProductImage as ProductWithImage } from "@/interfaces";
 import { Category } from "@/interfaces/category.interface";
 import clsx from "clsx";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 interface Props {
   //partial: es aceptar obj en el que por ej todas las props de product sean null
-  product: Partial<Product> & {ProductImage?: ProductImage[]};
+  product: Partial<Product> & {ProductImage?: ProductWithImage[]};
   categories: Category[];
 }
 
@@ -26,8 +26,7 @@ interface FormInputs {
   tags: string;
   gender: 'men' | 'women' | 'kid' | 'unisex';
   categoryId: string;
-
-  //TODO: images
+  images?: FileList;
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
@@ -45,8 +44,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       ...product,
       tags: product.tags?.join(', '),
       sizes: product.sizes ?? [],
-
-      //TODO: images
+      images: undefined
     }
   });
   watch('sizes')
@@ -61,7 +59,7 @@ export const ProductForm = ({ product, categories }: Props) => {
   const onSubmit = async (data: FormInputs) => {
     const formData = new FormData();
 
-    const { ...productToSave } = data;
+    const { images, ...productToSave } = data;
 
     if(product.id) {
       formData.append('id', product.id ?? '');
@@ -76,6 +74,12 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append('tags', productToSave.tags);
     formData.append('categoryId', productToSave.categoryId);
     formData.append('gender', productToSave.gender);
+
+    if(images) {
+      for(let i = 0; i < images.length; i++){
+        formData.append('images', images[i]);
+      }
+    }
 
     const { ok, product: updatedProduct } = await createUpdateProduct(formData);
 
@@ -135,7 +139,7 @@ export const ProductForm = ({ product, categories }: Props) => {
           <select className="p-2 border rounded-md bg-gray-200" {...register('categoryId', { required: true })}>
             {
               categories.map(category => (
-                <option key={category.id} value="c">{category.name}</option>
+                <option key={category.id} value={category.id}>{category.name}</option>
               ))
             }
 
@@ -190,7 +194,8 @@ export const ProductForm = ({ product, categories }: Props) => {
               type="file"
               multiple
               className="p-2 border rounded-md bg-gray-200"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/avif"
+              {...register('images')}
             />
 
           </div>
@@ -200,9 +205,9 @@ export const ProductForm = ({ product, categories }: Props) => {
             {
               product.ProductImage?.map( image => (
                 <div key={image.id}>
-                  <Image
+                  <ProductImage
                     alt={product.title ?? ''}
-                    src={`/products/${image.url}`}
+                    src={image.url}
                     width={300}
                     height={300}
                     className="rounded-t shadow-md"
@@ -211,7 +216,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                   <button
                     type="button"
                     className="btn-danger rounded-b-xl w-full"
-                    onClick={() => console.log()}>
+                    onClick={() => deleteProductImage(image.id, image.url)}>
                     Eliminar
                   </button>
                 </div>
