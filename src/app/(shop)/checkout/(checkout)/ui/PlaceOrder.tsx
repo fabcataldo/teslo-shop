@@ -1,10 +1,11 @@
 'use client';
 
 import { placeOrder } from "@/actions";
+import { Spinner } from "@/components";
+import { CustomButton } from "@/components/ui/custom-buttton/CustomButton";
 import { useCartStore } from "@/store";
 import { useAddressStore } from "@/store/address/address-store";
 import { currencyFormatter } from "@/utils";
-import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
@@ -49,7 +50,7 @@ export const PlaceOrder = () => {
     }
 
     if(!loaded) {
-        return <p>Cargando...</p>
+        return <Spinner position={'left'} showLoadingLabel={true}/>
     }
 
     return (
@@ -92,18 +93,12 @@ export const PlaceOrder = () => {
 
                 <p className="text-red-500">{errorMessage}</p>
                 
-                <button
+                <CustomButton
                     onClick={onPlaceOrder}
-                    className={
-                        clsx({
-                            'btn-primary': !isPlacingOrder,
-                            'btn-disabled': isPlacingOrder
-                        })
-                    }
-                    // href={"/orders/123"}
+                    disabled={isPlacingOrder}
+                    label="Colocar orden"
                     >
-                    Colocar orden
-                </button>
+                </CustomButton>
             </div>
         </div>
     )
