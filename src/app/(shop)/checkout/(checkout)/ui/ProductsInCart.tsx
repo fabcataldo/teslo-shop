@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCartStore } from "@/store";
 import { useEffect, useState } from "react";
 import { currencyFormatter } from "@/utils";
+import { Spinner } from "@/components";
 
 
 export const ProductsInCart = () => {
@@ -15,7 +16,7 @@ export const ProductsInCart = () => {
     })
     
     if(!loaded){
-        return <p>loading...</p>
+        return <Spinner position={'left'} showLoadingLabel={true}/>
     }
 
     return <>
