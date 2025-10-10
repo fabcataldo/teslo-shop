@@ -1,11 +1,27 @@
+import clsx from "clsx";
+
+type ContainerPosition = 'left' | 'right' | 'center';
+
 interface Props {
     showLoadingLabel?: boolean;
     className?: string;
+    position?: ContainerPosition;
 }
 
-export const Spinner = ({showLoadingLabel, className}: Props) => {
+export const Spinner = ({showLoadingLabel, className, position = 'center'}: Props) => {
   return (
-    <div className={`flex justify-center items-center ${className ?? ''}`}>
+    <div
+        className={
+            clsx(
+                "flex",
+                {
+                  'justify-left items-start': position === 'left',
+                  'justify-center items-center': position === 'center',
+                  'justify-right items-end': position === 'right'
+                }
+              )
+        }
+    >
         <svg 
             style={{
                 height: "25px"
