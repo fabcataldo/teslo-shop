@@ -1,7 +1,7 @@
 'use client';
 
 import { useCartStore } from "@/store";
-import { ProductImage, QuantitySelector } from "@/components";
+import { ProductImage, QuantitySelector, Spinner } from "@/components";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export const ProductsInCart = () => {
     })
     
     if(!loaded){
-        return <p>loading...</p>
+        return <Spinner position={'left'} showLoadingLabel={true}/>
     }
 
     return <>

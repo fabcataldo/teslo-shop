@@ -1,5 +1,6 @@
 'use client';
 
+import { Spinner } from "@/components";
 import { useCartStore } from "@/store";
 import { currencyFormatter } from "@/utils";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ export const OrderSummary = () => {
       setLoaded(true);
     }, [])
     
-    if(!loaded) return <p>Loading...</p>
+    if(!loaded) return <Spinner position={'left'} showLoadingLabel={true}/>
 
     return (
         <div className="grid grid-cols-2">
