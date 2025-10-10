@@ -29,7 +29,7 @@ export const ProductsInCart = () => {
                             width: '100px',
                             height: '100px'
                         }}
-                        src={`/products/${product.image}`}
+                        src={`${product.image}`}
                         width={100}
                         height={100}
                         alt={product.title}
