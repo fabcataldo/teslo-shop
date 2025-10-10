@@ -1,7 +1,7 @@
 "use client";
 
 import { authenticate } from "@/actions";
-import clsx from "clsx";
+import { CustomButton } from "@/components/ui/custom-buttton/CustomButton";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
@@ -80,17 +80,6 @@ function LoginButton() {
     const {pending} = useFormStatus();
 
     return (
-        <button
-            type="submit"
-            className={
-                clsx({
-                    "btn-primary": !pending,
-                    "btn-disabled": pending
-                })
-            }
-            disabled={pending}
-        >
-            Ingresar
-        </button>
+        <CustomButton disabled={pending} label={"Ingresar"}/>
     )
 }

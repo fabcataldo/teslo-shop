@@ -1,11 +1,11 @@
 "use client";
 
 import { login, registerUser } from "@/actions";
+import { CustomButton } from "@/components/ui/custom-buttton/CustomButton";
 import clsx from "clsx";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 type FormInputs = {
     name: string;
@@ -16,9 +16,11 @@ type FormInputs = {
 export const RegisterForm = () => {
     const { register, handleSubmit, formState: {errors} } = useForm<FormInputs>();
     const [errorMessage, setErrorMessage] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
     const onSubmit = async(data: FormInputs) => {
         setErrorMessage('');
+        setSubmitting(true);
 
         const { name, email, password } = data;
         const resp = await registerUser(name, email, password);
@@ -30,6 +32,7 @@ export const RegisterForm = () => {
 
         await login(email.toLowerCase(), password);
 
+        setSubmitting(false);
         window.location.replace('/');
     }
 
@@ -89,11 +92,7 @@ export const RegisterForm = () => {
 
             <span className="text-red-500">{errorMessage}</span>
 
-            <button
-                className="btn-primary">
-                Crear cuenta
-            </button>
-
+            <CustomButton disabled={submitting} label={"Crear cuenta"}/>
 
             {/* divisor l ine */ }
             <div className="flex items-center my-5">

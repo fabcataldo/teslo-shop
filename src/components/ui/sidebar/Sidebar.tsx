@@ -4,7 +4,7 @@ import { logout } from "@/actions";
 import { useUIStore } from "@/store";
 import clsx from "clsx";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   IoCloseOutline,
   IoLogInOutline,
@@ -16,6 +16,8 @@ import {
   IoTicketOutline,
 } from "react-icons/io5";
 import { useSession } from 'next-auth/react';
+import { Spinner } from "../spinner/Spinner";
+import { useState } from "react";
 
 export const Sidebar = () => {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
@@ -26,11 +28,14 @@ export const Sidebar = () => {
 
   const router = useRouter(); 
   const role = session?.user.role;
+  const [loading, setLoading] = useState(false);
 
-  const doLogout = async () => { 
+  const doLogout = async () => {
+      setLoading(true);
       await logout();
 
       closeMenu();
+      setLoading(false);
       router.replace('/auth/login');
   }
 
@@ -102,6 +107,10 @@ export const Sidebar = () => {
               >
                 <IoLogOutOutline size={ 30 } />
                 <span className="ml-3 text-xl">Salir</span>
+                {
+                  loading &&
+                    <Spinner className="ml-3"/>
+                }
               </button>
             </>
           )
