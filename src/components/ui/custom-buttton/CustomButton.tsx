@@ -3,10 +3,11 @@ import { Spinner } from "../spinner/Spinner";
 
 interface Props {
   disabled: boolean;
-  label: string
+  label: string;
+  onClick?: (...arg0: any[]) => any | (() => Promise<void>);
 }
 
-export const CustomButton = ({disabled, label}: Props) => {
+export const CustomButton = ({disabled, label, onClick}: Props) => {
   return (
     <button
         type="submit"
@@ -17,6 +18,7 @@ export const CustomButton = ({disabled, label}: Props) => {
             })
         }
         disabled={disabled}
+        onClick={onClick}
     >
       {
         !disabled
