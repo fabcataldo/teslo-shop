@@ -1,14 +1,11 @@
 export const revalidate = 0;
 
-import { getPaginatedOrders, getPaginatedProductsWithImages } from '@/actions';
+import { getPaginatedProductsWithImages } from '@/actions';
 import { Pagination, ProductImage, Title } from '@/components';
 import { CustomSearchParams } from '@/interfaces/custom-search-params.interface';
 import { currencyFormatter } from '@/utils';
-import Image from 'next/image';
 
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { IoCardOutline } from 'react-icons/io5';
 
 export default async function OrdersPage(
   { searchParams }: CustomSearchParams
@@ -17,7 +14,6 @@ export default async function OrdersPage(
   const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
   const { products, totalPages } = await getPaginatedProductsWithImages({ page });
 
-  //TODO agregar paginación
   return (    
     <>
       <Title title="Mantenimiento de Products" />

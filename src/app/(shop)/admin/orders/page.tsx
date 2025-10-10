@@ -2,20 +2,22 @@ export const revalidate = 0;
 
 import { getPaginatedOrders } from '@/actions';
 import { Pagination, Title } from '@/components';
+import { CustomSearchParams } from '@/interfaces';
 
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { IoCardOutline } from 'react-icons/io5';
 
-export default async function OrdersPage() {
+export default async function OrdersPage({ searchParams }: CustomSearchParams) {
+  const realSearchParams = await searchParams;
+  const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
 
-  const { ok, orders } = await getPaginatedOrders();
+  const { ok, orders, totalPages } = await getPaginatedOrders({page});
 
   if(!ok){
     redirect('/auth/login');
   }
 
-  //TODO agregar paginación
   return (
     
     <>
@@ -79,8 +81,7 @@ export default async function OrdersPage() {
           </tbody>
         </table>
 
-        //TODO completar paginación
-        <Pagination totalPages={1}/>
+        <Pagination totalPages={totalPages ?? 1}/>
       </div>
     </>
   );

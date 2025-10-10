@@ -1,16 +1,17 @@
 export const revalidate = 0;
 
-import { getPaginatedOrders, getPaginatedUsers } from '@/actions';
+import { getPaginatedUsers } from '@/actions';
 import { Pagination, Title } from '@/components';
 
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { IoCardOutline } from 'react-icons/io5';
 import { UsersTable } from './ui/UsersTable';
+import { CustomSearchParams } from '@/interfaces';
 
-export default async function OrdersPage() {
+export default async function OrdersPage({ searchParams }: CustomSearchParams) {
+  const realSearchParams = await searchParams;
+  const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
 
-  const { ok, users = [] } = await getPaginatedUsers();
+  const { ok, users = [], totalPages } = await getPaginatedUsers({page});
 
   if(!ok){
     redirect('/auth/login');
@@ -23,8 +24,7 @@ export default async function OrdersPage() {
       <div className="mb-10">
         <UsersTable users={users}/>
 
-        //TODO completar paginación
-        <Pagination totalPages={1}/>
+        <Pagination totalPages={totalPages ?? 1}/>
       </div>
     </>
   );
