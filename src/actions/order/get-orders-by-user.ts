@@ -3,7 +3,13 @@
 import { auth } from "@/auth.config";
 import { prisma } from "@/lib/prisma";
 
-export const getOrdersByUser = async() => {
+export const getOrdersByUser = async({
+    page = 1,
+    take = 12,
+}) => {
+    if (isNaN(Number(page))) page = 1;
+    if (page < 1) page = 1;
+
     const session = await auth();
 
     if(!session?.user){
@@ -14,6 +20,8 @@ export const getOrdersByUser = async() => {
     }
 
     const orders = await prisma.order.findMany({
+        take,
+        skip: (page - 1) * take,
         where: {
             userId: session.user.id
         },
@@ -27,7 +35,16 @@ export const getOrdersByUser = async() => {
         }
     });
 
+    const totalCount = await prisma.order.count({
+        where: {
+            userId: session.user.id
+        },
+    });
+    const totalPages = Math.ceil(totalCount / take);
+
     return {
+        currentPage: page,
+        totalPages: totalPages,
         ok: true,
         orders: orders
     }

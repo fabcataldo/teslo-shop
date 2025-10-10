@@ -34,7 +34,6 @@ export const getPaginatedProductsWithImages = async ({
             }
         });
 
-        //todo: 
         const totalCount = await prisma.product.count({
             where: {
                 gender: gender
