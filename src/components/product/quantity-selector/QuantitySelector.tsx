@@ -20,7 +20,7 @@ export const QuantitySelector = ({ quantity, onQuantityChanged }: Props) => {
                 <IoRemoveCircleOutline size={50} />
             </button>
 
-            <span className="w-20 mx-3 px-5 bg-gray-100 text-center rounded">
+            <span className="flex justify-center items-center w-20 mx-1 px-6 bg-gray-100 text-center rounded">
                 {quantity}
             </span>
 
