@@ -14,7 +14,7 @@ export const ProductsInCart = () => {
 
     useEffect(() => {
       setLoaded(true);
-    })
+    }, [])
     
     if(!loaded){
         return <Spinner position={'left'} showLoadingLabel={true}/>

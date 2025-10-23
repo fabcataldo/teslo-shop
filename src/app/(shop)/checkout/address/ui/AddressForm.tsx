@@ -29,7 +29,7 @@ interface Props {
 export const AddressForm = ({countries, userStoredAddress = {}}: Props) => {
     const { handleSubmit, register, formState: {isValid}, reset } = useForm<FormInputs>({
         defaultValues: {
-            ...(userStoredAddress as any),
+            ...(userStoredAddress),
             rememberAddress: false
         }
     });
@@ -46,17 +46,17 @@ export const AddressForm = ({countries, userStoredAddress = {}}: Props) => {
       if(address.firstName) {
         reset(address);
       }
-    }, [])
+    })
     
 
     const onSubmit = async (data: FormInputs) => {
-        const { rememberAddress, userId, ...restAddress } = data;
+        const { rememberAddress, ...restAddress } = data;
         setAddress(restAddress);
 
         if(rememberAddress){
             await setUserAddress(restAddress, session!.user.id);
         } else {
-            await deleteUserAddress(session!.user.id);
+            await deleteUserAddress();
         }
         router.push('/checkout');
 

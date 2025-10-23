@@ -7,7 +7,8 @@ import { redirect } from "next/navigation";
 
 export default async function HomePage({ searchParams }: CustomSearchParams) {
   const realSearchParams = await searchParams;
-  const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
+  const page = realSearchParams.page ? Number(realSearchParams.page) : 1;
+
   const { products, totalPages } = await getPaginatedProductsWithImages({ page });
 
   if(products.length === 0){

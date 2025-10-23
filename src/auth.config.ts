@@ -18,11 +18,11 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     session({session, token}) {
-      session.user = token.data as any;
+      session.user = token.data as typeof session.user;
       return session
     },
-    authorized({ auth, request: { nextUrl } }) {
-      
+    // authorized({ auth, request: { nextUrl } }) {
+    authorized() {
       // const isLoggedIn = !!auth?.user;
       // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       // if (isOnDashboard) {
@@ -54,7 +54,14 @@ export const authConfig: NextAuthConfig = {
         if(!bcryptjs.compareSync(password, user.password)) return null;
 
         //regresar el usuario sin el password
-        const { password: _, ...rest } = user;
+        const rest = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          role: user.role,
+          image: user.image
+        };
         return rest;
       },
     }),

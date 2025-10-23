@@ -1,5 +1,4 @@
 export interface CustomSearchParams {
-    searchParams: {
-        page?: string;
-    }
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ page?: string }>;
 }

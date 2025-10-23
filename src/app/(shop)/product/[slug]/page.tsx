@@ -1,21 +1,18 @@
 export const revalidate = 604800; //60*60*24*7 esta pag se revalida cada 7 dias
 
 import { getProductBySlug } from "@/actions";
-import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const slug = (await params).slug
 
@@ -32,7 +29,8 @@ export async function generateMetadata(
 }
 
 export default async function ProductBySlugPage({ params }: Props) {
-  const { slug } = params;
+  const { slug } = await params;
+
   const product = await getProductBySlug(slug);
 
   if (!product) {

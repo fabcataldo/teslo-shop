@@ -51,7 +51,7 @@ export const LoginForm = () => {
                 }
             </div>
            
-           <LoginButton onClick={dispatch}/>
+           <LoginButton/>
 
             {/* divisor l ine */}
             <div className="flex items-center my-5">
@@ -70,14 +70,10 @@ export const LoginForm = () => {
     )
 }
 
-interface LoginButtonProps {
-    onClick: (payload: FormData) => void;
-}
-
-function LoginButton({onClick}: LoginButtonProps) {
+function LoginButton() {
     const {pending} = useFormStatus();
 
     return (
-        <CustomButton disabled={pending} label={"Ingresar"} onClick={onClick}/>
+        <CustomButton disabled={pending} label={"Ingresar"}/>
     )
 }

@@ -56,7 +56,7 @@ export const getOrderById = async(id: string) => {
             order
         }
 
-    } catch (error: any) {
+    } catch (error) {
         console.log(error);
         return {
             ok: false,

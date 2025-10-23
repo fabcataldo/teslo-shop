@@ -4,11 +4,10 @@ type ContainerPosition = 'left' | 'right' | 'center';
 
 interface Props {
     showLoadingLabel?: boolean;
-    className?: string;
     position?: ContainerPosition;
 }
 
-export const Spinner = ({showLoadingLabel, className, position = 'center'}: Props) => {
+export const Spinner = ({showLoadingLabel, position = 'center'}: Props) => {
   return (
     <div
         className={
@@ -18,8 +17,9 @@ export const Spinner = ({showLoadingLabel, className, position = 'center'}: Prop
                   'justify-left items-start': position === 'left',
                   'justify-center items-center': position === 'center',
                   'justify-right items-end': position === 'right'
-                }
-              )
+                },
+                'ml-3'
+            )
         }
     >
         <svg 

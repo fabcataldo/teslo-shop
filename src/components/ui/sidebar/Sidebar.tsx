@@ -109,7 +109,7 @@ export const Sidebar = () => {
                 <span className="ml-3 text-xl">Salir</span>
                 {
                   loading &&
-                    <Spinner className="ml-3"/>
+                    <Spinner/>
                 }
               </button>
             </>

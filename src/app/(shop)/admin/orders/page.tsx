@@ -9,10 +9,9 @@ import { redirect } from 'next/navigation';
 import { IoCardOutline } from 'react-icons/io5';
 
 export default async function OrdersPage({ searchParams }: CustomSearchParams) {
-  const realSearchParams = await searchParams;
-  const page = realSearchParams.page ? parseInt(realSearchParams.page) : 1;
+  const { page } = await searchParams;
 
-  const { ok, orders, totalPages } = await getPaginatedOrders({page});
+  const { ok, orders, totalPages } = await getPaginatedOrders({ page: page ? Number(page) : 1 });
 
   if(!ok){
     redirect('/auth/login');
