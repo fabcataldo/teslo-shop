@@ -34,7 +34,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 navigation={true}
                 autoplay={
                     {
-                        delay: 2000
+                        delay: 4000
                     }
                 }
                 thumbs={{ 
@@ -65,7 +65,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                             <ProductImage
                                 width={300}
                                 height={300}
-                                src={`/products/${image}`}
+                                src={`${image}`}
                                 alt={title}
                                 className='rounded-lg object-fill'>
                             </ProductImage>
